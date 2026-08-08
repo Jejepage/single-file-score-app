@@ -1,6 +1,6 @@
 # Punktestand
 
-Eine mobile Punkte-App für mehrere Spieler – als einzelne `index.html`, ohne Frameworks und ohne externe Abhängigkeiten.
+Eine mobile Punkte-App für mehrere Spieler – ohne Frameworks und ohne externe Abhängigkeiten.
 
 **Live-App:** <https://jejepage.github.io/single-file-score-app/>
 
@@ -13,6 +13,7 @@ Eine mobile Punkte-App für mehrere Spieler – als einzelne `index.html`, ohne 
 - manuelles Spielende mit Rangliste
 - lokale Speicherung im Browser
 - iPhone-optimierter Hell- und Dunkelmodus
+- eigenes App-Icon für den iPhone-Home-Bildschirm
 
 ## Verwendung
 

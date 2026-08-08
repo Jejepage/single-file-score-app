@@ -6,8 +6,9 @@ Eine einfache mobile Web-App zur Verwaltung von Spielständen. Die App ist für 
 
 ## 2. Technischer Rahmen
 
-- Die vollständige App befindet sich in einer einzelnen `index.html`.
+- Die vollständige App-Logik und Gestaltung befinden sich in einer einzelnen `index.html`.
 - HTML, CSS und JavaScript sind direkt in dieser Datei eingebettet.
+- Das Home-Bildschirm-Icon liegt separat als `apple-touch-icon.png` vor.
 - Es gibt keinen Build-Schritt und keine Server-Komponente.
 - Das aktuelle Spiel wird im `localStorage` des jeweiligen Browsers gespeichert.
 - Die App wird als statische Website über GitHub Pages bereitgestellt.
