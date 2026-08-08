@@ -1,0 +1,946 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#f4f3ef" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#111210" media="(prefers-color-scheme: dark)">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Punktestand">
+  <title>Punktestand</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #f4f3ef;
+      --surface: rgba(255, 255, 255, .86);
+      --surface-solid: #fff;
+      --surface-soft: #ebeae5;
+      --text: #171915;
+      --muted: #72766d;
+      --line: rgba(23, 25, 21, .10);
+      --accent: #176b4f;
+      --accent-strong: #0e523b;
+      --accent-soft: #dceee6;
+      --warm: #f5b83d;
+      --danger: #b52d36;
+      --shadow: 0 14px 40px rgba(35, 42, 33, .09);
+      --radius-xl: 28px;
+      --radius-lg: 22px;
+      --radius-md: 15px;
+      --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, sans-serif;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #111210;
+        --surface: rgba(29, 31, 28, .88);
+        --surface-solid: #1d1f1c;
+        --surface-soft: #292b27;
+        --text: #f3f4ef;
+        --muted: #a2a79d;
+        --line: rgba(255, 255, 255, .10);
+        --accent: #63c89f;
+        --accent-strong: #80d8b5;
+        --accent-soft: #173e30;
+        --warm: #f8c75f;
+        --danger: #ff6f78;
+        --shadow: 0 18px 48px rgba(0, 0, 0, .24);
+      }
+    }
+
+    * { box-sizing: border-box; }
+
+    html { -webkit-text-size-adjust: 100%; }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      min-height: 100svh;
+      overflow-x: hidden;
+      background:
+        radial-gradient(circle at 92% 3%, rgba(245, 184, 61, .16), transparent 28rem),
+        radial-gradient(circle at -8% 36%, rgba(23, 107, 79, .12), transparent 25rem),
+        var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button, input { font: inherit; }
+
+    button {
+      color: inherit;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+
+    button:focus-visible, input:focus-visible {
+      outline: 3px solid color-mix(in srgb, var(--accent) 45%, transparent);
+      outline-offset: 2px;
+    }
+
+    .app-shell {
+      width: min(100%, 720px);
+      min-height: 100svh;
+      margin: 0 auto;
+      padding: max(18px, env(safe-area-inset-top)) 18px max(30px, env(safe-area-inset-bottom));
+    }
+
+    .topbar {
+      display: flex;
+      min-height: 52px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      font-size: 18px;
+      font-weight: 760;
+      letter-spacing: -.02em;
+    }
+
+    .brand-mark {
+      display: grid;
+      width: 38px;
+      height: 38px;
+      place-items: center;
+      border-radius: 12px;
+      background: var(--accent);
+      color: white;
+      font-size: 19px;
+      box-shadow: 0 8px 20px color-mix(in srgb, var(--accent) 28%, transparent);
+    }
+
+    .icon-button {
+      display: inline-grid;
+      min-width: 44px;
+      height: 44px;
+      padding: 0 13px;
+      place-items: center;
+      border: 0;
+      border-radius: 14px;
+      background: var(--surface);
+      box-shadow: inset 0 0 0 1px var(--line);
+      font-size: 15px;
+      font-weight: 680;
+      cursor: pointer;
+      backdrop-filter: blur(16px);
+    }
+
+    .icon-button:disabled { opacity: .38; cursor: default; }
+
+    main { animation: appear .28s ease both; }
+
+    @keyframes appear {
+      from { opacity: 0; transform: translateY(6px); }
+    }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      max-width: 600px;
+      margin: 0;
+      font-size: clamp(34px, 9.5vw, 58px);
+      line-height: .98;
+      letter-spacing: -.055em;
+    }
+
+    .intro {
+      max-width: 520px;
+      margin: 16px 0 28px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    .panel {
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(20px);
+    }
+
+    .section-label {
+      display: block;
+      margin-bottom: 9px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .target-field {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+      padding: 5px 5px 5px 16px;
+      border-radius: var(--radius-lg);
+      background: var(--surface-soft);
+    }
+
+    .target-field input {
+      width: 100%;
+      min-width: 0;
+      height: 54px;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--text);
+      font-size: 24px;
+      font-weight: 760;
+    }
+
+    .target-unit {
+      padding-right: 14px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 650;
+    }
+
+    .players-list { display: grid; gap: 10px; }
+
+    .player-row {
+      display: grid;
+      grid-template-columns: 34px 1fr 44px;
+      align-items: center;
+      gap: 10px;
+      padding: 7px 7px 7px 13px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      background: var(--surface-solid);
+    }
+
+    .player-number {
+      display: grid;
+      width: 30px;
+      height: 30px;
+      place-items: center;
+      border-radius: 10px;
+      background: var(--accent-soft);
+      color: var(--accent-strong);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .player-row input {
+      width: 100%;
+      min-width: 0;
+      height: 44px;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--text);
+      font-size: 17px;
+      font-weight: 650;
+    }
+
+    .remove-player {
+      width: 44px;
+      height: 44px;
+      border: 0;
+      border-radius: 13px;
+      background: transparent;
+      color: var(--muted);
+      font-size: 21px;
+      cursor: pointer;
+    }
+
+    .remove-player:disabled { opacity: .25; }
+
+    .secondary-button, .primary-button, .danger-button {
+      display: flex;
+      width: 100%;
+      min-height: 54px;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border-radius: 17px;
+      font-size: 16px;
+      font-weight: 760;
+      cursor: pointer;
+    }
+
+    .secondary-button {
+      margin-top: 12px;
+      border: 1px dashed color-mix(in srgb, var(--accent) 45%, var(--line));
+      background: var(--accent-soft);
+      color: var(--accent-strong);
+    }
+
+    .primary-button {
+      margin-top: 18px;
+      border: 0;
+      background: var(--accent);
+      color: white;
+      box-shadow: 0 10px 24px color-mix(in srgb, var(--accent) 25%, transparent);
+    }
+
+    .primary-button:active, .secondary-button:active, .score-add:active { transform: scale(.985); }
+
+    .error {
+      min-height: 20px;
+      margin: 10px 2px -2px;
+      color: var(--danger);
+      font-size: 13px;
+      font-weight: 650;
+    }
+
+    .game-head {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: end;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .game-head h1 { font-size: clamp(35px, 10vw, 52px); }
+
+    .target-pill {
+      padding: 9px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--surface);
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .target-pill strong { color: var(--text); font-size: 16px; }
+
+    .score-list { display: grid; gap: 14px; }
+
+    .score-card {
+      position: relative;
+      overflow: hidden;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      transition: border-color .2s, background .2s, transform .2s;
+      backdrop-filter: blur(20px);
+    }
+
+    .score-card.reached {
+      border-color: color-mix(in srgb, var(--warm) 70%, var(--line));
+      background: color-mix(in srgb, var(--surface-solid) 86%, var(--warm));
+    }
+
+    .score-card.reached::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 5px;
+      background: var(--warm);
+    }
+
+    .score-summary {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .score-name {
+      overflow: hidden;
+      margin: 2px 0 4px;
+      font-size: 19px;
+      font-weight: 760;
+      letter-spacing: -.02em;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .score-status {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    .score-status.hit { color: color-mix(in srgb, var(--warm) 75%, var(--text)); }
+
+    .score-value {
+      flex: 0 0 auto;
+      font-size: 38px;
+      font-variant-numeric: tabular-nums;
+      font-weight: 820;
+      line-height: 1;
+      letter-spacing: -.045em;
+    }
+
+    .score-controls {
+      display: grid;
+      grid-template-columns: 48px minmax(0, 1fr) auto;
+      gap: 8px;
+    }
+
+    .sign-toggle {
+      min-width: 48px;
+      height: 50px;
+      border: 0;
+      border-radius: 15px;
+      background: var(--surface-soft);
+      font-size: 18px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .score-input {
+      width: 100%;
+      min-width: 0;
+      height: 50px;
+      padding: 0 13px;
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      outline: 0;
+      background: var(--surface-solid);
+      color: var(--text);
+      font-size: 18px;
+      font-variant-numeric: tabular-nums;
+      font-weight: 700;
+    }
+
+    .score-input::placeholder { color: var(--muted); font-weight: 500; }
+
+    .score-add {
+      min-width: 92px;
+      height: 50px;
+      padding: 0 16px;
+      border: 0;
+      border-radius: 15px;
+      background: var(--accent);
+      color: white;
+      font-size: 15px;
+      font-weight: 760;
+      cursor: pointer;
+    }
+
+    .game-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .game-actions button {
+      min-height: 52px;
+      border: 0;
+      border-radius: 17px;
+      font-weight: 740;
+      cursor: pointer;
+    }
+
+    .undo-button { background: var(--surface-soft); color: var(--text); }
+    .undo-button:disabled { opacity: .4; }
+    .round-button { background: var(--accent-soft); color: var(--accent-strong); }
+    .finish-button { grid-column: 1 / -1; background: var(--text); color: var(--bg); }
+
+    .finish-hero {
+      padding: 24px 4px 30px;
+      text-align: center;
+    }
+
+    .trophy {
+      display: grid;
+      width: 68px;
+      height: 68px;
+      margin: 0 auto 18px;
+      place-items: center;
+      border-radius: 23px;
+      background: color-mix(in srgb, var(--warm) 24%, var(--surface-solid));
+      font-size: 32px;
+      box-shadow: var(--shadow);
+    }
+
+    .finish-hero h1 { margin: 0 auto; font-size: clamp(36px, 10vw, 54px); }
+    .finish-hero p { margin: 12px 0 0; color: var(--muted); line-height: 1.45; }
+
+    .ranking { display: grid; gap: 10px; }
+
+    .rank-row {
+      display: grid;
+      grid-template-columns: 38px 1fr auto;
+      align-items: center;
+      gap: 10px;
+      min-height: 66px;
+      padding: 10px 16px 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: var(--surface);
+    }
+
+    .rank-row.winner { border-color: color-mix(in srgb, var(--warm) 62%, var(--line)); }
+
+    .rank-position {
+      display: grid;
+      width: 36px;
+      height: 36px;
+      place-items: center;
+      border-radius: 12px;
+      background: var(--surface-soft);
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .rank-row.winner .rank-position { background: var(--warm); color: #342405; }
+    .rank-name { overflow: hidden; font-weight: 740; text-overflow: ellipsis; white-space: nowrap; }
+    .rank-score { font-size: 22px; font-variant-numeric: tabular-nums; font-weight: 820; }
+
+    .finish-actions { display: grid; gap: 10px; margin-top: 18px; }
+    .finish-actions .primary-button, .finish-actions .secondary-button { margin-top: 0; }
+
+    dialog {
+      width: min(calc(100% - 32px), 430px);
+      padding: 0;
+      border: 0;
+      border-radius: 28px;
+      background: var(--surface-solid);
+      color: var(--text);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, .28);
+    }
+
+    dialog::backdrop {
+      background: rgba(5, 7, 5, .42);
+      backdrop-filter: blur(5px);
+    }
+
+    .dialog-content { padding: 25px 22px 20px; }
+    .dialog-content h2 { margin: 0 0 8px; font-size: 23px; letter-spacing: -.025em; }
+    .dialog-content p { margin: 0; color: var(--muted); line-height: 1.45; }
+    .dialog-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-top: 22px; }
+    .dialog-actions button { min-height: 50px; border: 0; border-radius: 15px; font-weight: 750; cursor: pointer; }
+    .dialog-cancel { background: var(--surface-soft); }
+    .danger-button { min-height: 50px; background: var(--text); color: var(--bg); }
+
+    .toast {
+      position: fixed;
+      z-index: 10;
+      left: 50%;
+      bottom: max(22px, calc(env(safe-area-inset-bottom) + 12px));
+      max-width: calc(100% - 36px);
+      padding: 11px 16px;
+      border-radius: 999px;
+      background: var(--text);
+      color: var(--bg);
+      font-size: 13px;
+      font-weight: 700;
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-50%, 12px);
+      transition: opacity .2s, transform .2s;
+    }
+
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+    @media (min-width: 620px) {
+      .app-shell { padding-inline: 26px; }
+      .score-list { grid-template-columns: 1fr 1fr; }
+      .score-card { min-width: 0; }
+    }
+
+    @media (max-width: 380px) {
+      .app-shell { padding-inline: 14px; }
+      .panel, .score-card { padding: 16px; }
+      .score-add { min-width: 78px; padding-inline: 12px; }
+      .game-head { grid-template-columns: 1fr; align-items: start; }
+      .target-pill { justify-self: start; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark" aria-hidden="true">↗</span><span>Punktestand</span></div>
+      <button id="resetTop" class="icon-button" type="button" hidden>Neu</button>
+    </header>
+    <main id="app" aria-live="polite"></main>
+  </div>
+
+  <dialog id="confirmDialog">
+    <div class="dialog-content">
+      <h2 id="dialogTitle">Spiel beenden?</h2>
+      <p id="dialogText">Der aktuelle Stand wird zur Rangliste.</p>
+      <div class="dialog-actions">
+        <button id="dialogCancel" class="dialog-cancel" type="button">Abbrechen</button>
+        <button id="dialogConfirm" class="danger-button" type="button">Beenden</button>
+      </div>
+    </div>
+  </dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const STORAGE_KEY = "punktestand-app-v1";
+      const app = document.querySelector("#app");
+      const resetTop = document.querySelector("#resetTop");
+      const dialog = document.querySelector("#confirmDialog");
+      const dialogTitle = document.querySelector("#dialogTitle");
+      const dialogText = document.querySelector("#dialogText");
+      const dialogCancel = document.querySelector("#dialogCancel");
+      const dialogConfirm = document.querySelector("#dialogConfirm");
+      const toast = document.querySelector("#toast");
+      let pendingConfirmation = null;
+      let toastTimer;
+
+      const newId = () => `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
+      const initialState = () => ({
+        screen: "setup",
+        target: 100,
+        players: [],
+        lastAction: null
+      });
+
+      function loadState() {
+        try {
+          const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+          if (!saved || !["setup", "game", "finished"].includes(saved.screen) || !Array.isArray(saved.players)) return initialState();
+          return {
+            screen: saved.screen,
+            target: Number.isFinite(Number(saved.target)) ? Math.max(1, Math.trunc(Number(saved.target))) : 100,
+            players: saved.players.slice(0, 30).map((player, index) => ({
+              id: String(player.id || newId()),
+              name: String(player.name || `Spieler ${index + 1}`).slice(0, 40),
+              score: Number.isFinite(Number(player.score)) ? Math.trunc(Number(player.score)) : 0
+            })),
+            lastAction: saved.lastAction && Number.isFinite(Number(saved.lastAction.delta))
+              ? { playerId: String(saved.lastAction.playerId), delta: Math.trunc(Number(saved.lastAction.delta)) }
+              : null
+          };
+        } catch {
+          return initialState();
+        }
+      }
+
+      let state = loadState();
+      if (state.screen !== "setup" && state.players.length < 2) state = initialState();
+
+      function save() {
+        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch { /* App bleibt auch ohne Speicher nutzbar. */ }
+      }
+
+      function escapeHtml(value) {
+        return String(value).replace(/[&<>'"]/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" })[char]);
+      }
+
+      function showToast(message) {
+        clearTimeout(toastTimer);
+        toast.textContent = message;
+        toast.classList.add("show");
+        toastTimer = setTimeout(() => toast.classList.remove("show"), 1800);
+      }
+
+      function confirmAction({ title, text, confirmLabel, action }) {
+        dialogTitle.textContent = title;
+        dialogText.textContent = text;
+        dialogConfirm.textContent = confirmLabel;
+        pendingConfirmation = action;
+        dialog.showModal();
+      }
+
+      dialogCancel.addEventListener("click", () => dialog.close());
+      dialog.addEventListener("cancel", () => { pendingConfirmation = null; });
+      dialog.addEventListener("close", () => { if (dialog.returnValue !== "confirm") pendingConfirmation = null; });
+      dialogConfirm.addEventListener("click", () => {
+        const action = pendingConfirmation;
+        pendingConfirmation = null;
+        dialog.returnValue = "confirm";
+        dialog.close();
+        if (action) action();
+      });
+
+      resetTop.addEventListener("click", () => {
+        confirmAction({
+          title: "Neues Spiel beginnen?",
+          text: "Der aktuelle Spielstand wird gelöscht. Diese Aktion kann nicht rückgängig gemacht werden.",
+          confirmLabel: "Neu beginnen",
+          action: resetGame
+        });
+      });
+
+      function resetGame() {
+        localStorage.removeItem(STORAGE_KEY);
+        state = initialState();
+        save();
+        render();
+      }
+
+      function setupTemplate() {
+        return `
+          <section>
+            <p class="eyebrow">Neues Spiel</p>
+            <h1>Wer sammelt die meisten Punkte?</h1>
+            <p class="intro">Lege eine Zielmarke fest und füge alle Mitspielenden hinzu. Ihr entscheidet selbst, wann Schluss ist.</p>
+            <div class="panel">
+              <label class="section-label" for="target">Zielmarke</label>
+              <div class="target-field">
+                <input id="target" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="9" value="${state.target}" aria-describedby="setupError">
+                <span class="target-unit">Punkte</span>
+              </div>
+              <span class="section-label">Mitspielende</span>
+              <div id="playersList" class="players-list">
+                ${state.players.map((player, index) => `
+                  <div class="player-row" data-player-id="${escapeHtml(player.id)}">
+                    <span class="player-number">${index + 1}</span>
+                    <input class="player-name" type="text" maxlength="40" value="${escapeHtml(player.name)}" aria-label="Name von Spieler ${index + 1}" autocomplete="off">
+                    <button class="remove-player" type="button" aria-label="${escapeHtml(player.name)} entfernen">×</button>
+                  </div>
+                `).join("")}
+              </div>
+              <button id="addPlayer" class="secondary-button" type="button"><span aria-hidden="true">＋</span> Spieler hinzufügen</button>
+              <p id="setupError" class="error" role="alert"></p>
+              <button id="startGame" class="primary-button" type="button">Spiel starten</button>
+            </div>
+          </section>`;
+      }
+
+      function gameTemplate() {
+        return `
+          <section>
+            <div class="game-head">
+              <div><p class="eyebrow">Spiel läuft</p><h1>Aktueller Stand</h1></div>
+              <div class="target-pill">Zielmarke <strong>${state.target}</strong></div>
+            </div>
+            <div class="score-list">
+              ${state.players.map(player => {
+                const reached = player.score >= state.target;
+                return `
+                  <article class="score-card${reached ? " reached" : ""}" data-player-id="${escapeHtml(player.id)}">
+                    <div class="score-summary">
+                      <div style="min-width:0">
+                        <h2 class="score-name">${escapeHtml(player.name)}</h2>
+                        <div class="score-status${reached ? " hit" : ""}">${reached ? "Zielmarke erreicht" : `${Math.max(0, state.target - player.score)} bis zur Zielmarke`}</div>
+                      </div>
+                      <div class="score-value">${player.score}</div>
+                    </div>
+                    <form class="score-controls">
+                      <button class="sign-toggle" type="button" aria-label="Vorzeichen wechseln">±</button>
+                      <input class="score-input" type="text" inputmode="numeric" pattern="-?[0-9]*" maxlength="10" placeholder="Punkte" aria-label="Punkte für ${escapeHtml(player.name)}" autocomplete="off">
+                      <button class="score-add" type="submit">Addieren</button>
+                    </form>
+                  </article>`;
+              }).join("")}
+            </div>
+            <div class="game-actions">
+              <button id="undo" class="undo-button" type="button" ${state.lastAction ? "" : "disabled"}>↶ Rückgängig</button>
+              <button id="newRound" class="round-button" type="button">Neue Runde</button>
+              <button id="finish" class="finish-button" type="button">Spiel beenden</button>
+            </div>
+          </section>`;
+      }
+
+      function finishedTemplate() {
+        const sorted = [...state.players].sort((a, b) => b.score - a.score);
+        const highScore = sorted[0]?.score ?? 0;
+        const winners = sorted.filter(player => player.score === highScore);
+        const winnerText = winners.length === 1
+          ? `${escapeHtml(winners[0].name)} gewinnt mit ${highScore} Punkten.`
+          : `${winners.map(player => escapeHtml(player.name)).join(" & ")} teilen sich den Sieg mit ${highScore} Punkten.`;
+        let displayedRank = 0;
+        let previousScore = null;
+
+        return `
+          <section>
+            <div class="finish-hero">
+              <div class="trophy" aria-hidden="true">★</div>
+              <p class="eyebrow">Endstand</p>
+              <h1>${winners.length === 1 ? "Sieg!" : "Gleichstand!"}</h1>
+              <p>${winnerText}</p>
+            </div>
+            <div class="ranking" aria-label="Rangliste">
+              ${sorted.map((player, index) => {
+                if (player.score !== previousScore) displayedRank = index + 1;
+                previousScore = player.score;
+                return `
+                  <div class="rank-row${player.score === highScore ? " winner" : ""}">
+                    <div class="rank-position">${displayedRank}</div>
+                    <div class="rank-name">${escapeHtml(player.name)}</div>
+                    <div class="rank-score">${player.score}</div>
+                  </div>`;
+              }).join("")}
+            </div>
+            <div class="finish-actions">
+              <button id="newRound" class="primary-button" type="button">Neue Runde</button>
+              <button id="newGame" class="secondary-button" type="button">Neues Spiel einrichten</button>
+            </div>
+          </section>`;
+      }
+
+      function bindSetup() {
+        const targetInput = document.querySelector("#target");
+        const error = document.querySelector("#setupError");
+
+        targetInput.addEventListener("input", event => {
+          event.target.value = event.target.value.replace(/\D/g, "");
+          if (event.target.value) {
+            state.target = Math.max(1, Math.trunc(Number(event.target.value)));
+            save();
+          }
+        });
+
+        document.querySelector("#playersList").addEventListener("input", event => {
+          if (!event.target.matches(".player-name")) return;
+          const row = event.target.closest("[data-player-id]");
+          const player = state.players.find(item => item.id === row.dataset.playerId);
+          if (player) { player.name = event.target.value; save(); }
+        });
+
+        document.querySelector("#playersList").addEventListener("click", event => {
+          const button = event.target.closest(".remove-player");
+          if (!button) return;
+          const row = button.closest("[data-player-id]");
+          state.players = state.players.filter(player => player.id !== row.dataset.playerId);
+          save();
+          render();
+        });
+
+        document.querySelector("#addPlayer").addEventListener("click", () => {
+          if (state.players.length >= 30) { showToast("Maximal 30 Mitspielende"); return; }
+          const nextNumber = state.players.length + 1;
+          state.players.push({ id: newId(), name: `Spieler ${nextNumber}`, score: 0 });
+          save();
+          render();
+          const inputs = document.querySelectorAll(".player-name");
+          const newest = inputs[inputs.length - 1];
+          newest.focus();
+          newest.select();
+        });
+
+        document.querySelector("#startGame").addEventListener("click", () => {
+          const target = Math.trunc(Number(targetInput.value));
+          const names = state.players.map(player => player.name.trim());
+          if (!Number.isFinite(target) || target < 1) { error.textContent = "Bitte gib eine Zielmarke größer als 0 ein."; targetInput.focus(); return; }
+          if (state.players.length < 2) { error.textContent = "Bitte füge mindestens zwei Mitspielende hinzu."; return; }
+          if (names.some(name => !name)) { error.textContent = "Bitte gib allen Mitspielenden einen Namen."; return; }
+          const normalized = names.map(name => name.toLocaleLowerCase("de"));
+          if (new Set(normalized).size !== normalized.length) { error.textContent = "Bitte verwende unterschiedliche Namen."; return; }
+          state.target = target;
+          state.players = state.players.map((player, index) => ({ ...player, name: names[index], score: 0 }));
+          state.lastAction = null;
+          state.screen = "game";
+          save();
+          render();
+        });
+      }
+
+      function parseScore(raw) {
+        const cleaned = raw.trim().replace(/[^0-9-]/g, "");
+        if (!/^-?\d+$/.test(cleaned)) return null;
+        const value = Math.trunc(Number(cleaned));
+        return Number.isSafeInteger(value) ? value : null;
+      }
+
+      function startNewRound() {
+        state.players = state.players.map(player => ({ ...player, score: 0 }));
+        state.lastAction = null;
+        state.screen = "game";
+        save();
+        render();
+        showToast("Neue Runde gestartet");
+      }
+
+      function bindGame() {
+        document.querySelector(".score-list").addEventListener("click", event => {
+          const toggle = event.target.closest(".sign-toggle");
+          if (!toggle) return;
+          const input = toggle.parentElement.querySelector(".score-input");
+          const digits = input.value.replace(/[^0-9]/g, "");
+          input.value = input.value.trim().startsWith("-") ? digits : `-${digits}`;
+          input.focus();
+          input.setSelectionRange(input.value.length, input.value.length);
+        });
+
+        document.querySelector(".score-list").addEventListener("input", event => {
+          if (!event.target.matches(".score-input")) return;
+          const isNegative = event.target.value.trim().startsWith("-");
+          const digits = event.target.value.replace(/\D/g, "");
+          event.target.value = `${isNegative ? "-" : ""}${digits}`;
+        });
+
+        document.querySelector(".score-list").addEventListener("submit", event => {
+          event.preventDefault();
+          const card = event.target.closest("[data-player-id]");
+          const input = event.target.querySelector(".score-input");
+          const delta = parseScore(input.value);
+          if (delta === null || delta === 0) { showToast("Bitte Punkte ungleich 0 eingeben"); input.focus(); return; }
+          const player = state.players.find(item => item.id === card.dataset.playerId);
+          if (!player) return;
+          const newScore = player.score + delta;
+          if (!Number.isSafeInteger(newScore)) { showToast("Dieser Punktestand ist zu groß"); return; }
+          player.score = newScore;
+          state.lastAction = { playerId: player.id, delta };
+          save();
+          render();
+          showToast(`${delta > 0 ? "+" : ""}${delta} für ${player.name}`);
+        });
+
+        document.querySelector("#undo").addEventListener("click", () => {
+          if (!state.lastAction) return;
+          const player = state.players.find(item => item.id === state.lastAction.playerId);
+          if (player) player.score -= state.lastAction.delta;
+          state.lastAction = null;
+          save();
+          render();
+          showToast("Letzte Eingabe rückgängig gemacht");
+        });
+
+        document.querySelector("#newRound").addEventListener("click", () => {
+          confirmAction({
+            title: "Neue Runde starten?",
+            text: "Alle Punktestände werden auf 0 gesetzt. Namen und Zielmarke bleiben erhalten.",
+            confirmLabel: "Neue Runde",
+            action: startNewRound
+          });
+        });
+
+        document.querySelector("#finish").addEventListener("click", () => {
+          confirmAction({
+            title: "Spiel wirklich beenden?",
+            text: "Der aktuelle Stand wird als endgültige Rangliste angezeigt.",
+            confirmLabel: "Spiel beenden",
+            action: () => { state.screen = "finished"; state.lastAction = null; save(); render(); }
+          });
+        });
+      }
+
+      function bindFinished() {
+        document.querySelector("#newRound").addEventListener("click", startNewRound);
+        document.querySelector("#newGame").addEventListener("click", resetGame);
+      }
+
+      function render() {
+        resetTop.hidden = state.screen === "setup";
+        if (state.screen === "setup") { app.innerHTML = setupTemplate(); bindSetup(); }
+        else if (state.screen === "game") { app.innerHTML = gameTemplate(); bindGame(); }
+        else { app.innerHTML = finishedTemplate(); bindFinished(); }
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      save();
+      render();
+    })();
+  </script>
+</body>
+</html>
