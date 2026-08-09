@@ -58,6 +58,7 @@ Eine einfache mobile Web-App zur Verwaltung von Spielständen. Die App ist für 
 
 - Mobile-First-Oberfläche im Stil einer nativen iPhone-App.
 - Große Touch-Ziele, gut lesbare Typografie und deutliche Rückmeldungen.
+- Die laufenden Punktestände erscheinen als kompakte einzeilige Liste, damit möglichst viele Spieler gleichzeitig sichtbar bleiben.
 - Unterstützung für iPhone Safe Areas, Hellmodus, Dunkelmodus und reduzierte Animationen.
 - Eingabefelder vermeiden den automatischen Safari-Zoom.
 - Die Oberfläche bleibt auch auf größeren Displays responsiv.
