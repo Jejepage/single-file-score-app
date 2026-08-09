@@ -390,19 +390,8 @@
 
     .score-controls {
       display: grid;
-      grid-template-columns: 44px 64px 44px;
+      grid-template-columns: 72px 44px;
       gap: 6px;
-    }
-
-    .sign-toggle {
-      min-width: 44px;
-      height: 44px;
-      border: 0;
-      border-radius: 12px;
-      background: var(--surface-soft);
-      font-size: 18px;
-      font-weight: 800;
-      cursor: pointer;
     }
 
     .score-input {
@@ -555,7 +544,7 @@
 
     @media (min-width: 620px) {
       .app-shell { padding-inline: 26px; }
-      .score-controls { grid-template-columns: 44px 78px 46px; }
+      .score-controls { grid-template-columns: 88px 46px; }
     }
 
     @media (max-width: 380px) {
@@ -569,8 +558,7 @@
       .score-status { display: none; }
       .score-name { font-size: 15px; }
       .score-value { font-size: 26px; }
-      .score-controls { grid-template-columns: 44px 52px 44px; gap: 4px; }
-      .sign-toggle { min-width: 44px; height: 44px; font-size: 16px; }
+      .score-controls { grid-template-columns: 62px 44px; gap: 4px; }
       .score-input { height: 44px; padding-inline: 5px; }
       .score-add { min-width: 44px; height: 44px; font-size: 20px; }
       .game-head { grid-template-columns: 1fr; align-items: start; }
@@ -750,7 +738,6 @@
                       <div class="score-value">${player.score}</div>
                     </div>
                     <form class="score-controls">
-                      <button class="sign-toggle" type="button" aria-label="Vorzeichen wechseln">±</button>
                       <input class="score-input" type="text" inputmode="numeric" pattern="-?[0-9]*" maxlength="10" placeholder="Punkte" aria-label="Punkte für ${escapeHtml(player.name)}" autocomplete="off">
                       <button class="score-add" type="submit" aria-label="Punkte für ${escapeHtml(player.name)} addieren" title="Punkte addieren">+</button>
                     </form>
@@ -876,16 +863,6 @@
       }
 
       function bindGame() {
-        document.querySelector(".score-list").addEventListener("click", event => {
-          const toggle = event.target.closest(".sign-toggle");
-          if (!toggle) return;
-          const input = toggle.parentElement.querySelector(".score-input");
-          const digits = input.value.replace(/[^0-9]/g, "");
-          input.value = input.value.trim().startsWith("-") ? digits : `-${digits}`;
-          input.focus();
-          input.setSelectionRange(input.value.length, input.value.length);
-        });
-
         document.querySelector(".score-list").addEventListener("input", event => {
           if (!event.target.matches(".score-input")) return;
           const isNegative = event.target.value.trim().startsWith("-");

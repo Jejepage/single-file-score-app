@@ -26,7 +26,7 @@ Eine einfache mobile Web-App zur Verwaltung von Spielständen. Die App ist für 
 
 - Jeder Spieler besitzt einen sichtbaren Gesamtpunktestand.
 - Punkte werden als freie ganze Zahl eingegeben und zum aktuellen Stand addiert.
-- Positive und negative Werte sind erlaubt; `0` wird nicht als Änderung akzeptiert.
+- Positive und negative Werte sind erlaubt und werden direkt im Punktefeld eingegeben; `0` wird nicht als Änderung akzeptiert.
 - Ein Spieler wird optisch hervorgehoben, sobald sein Punktestand die Zielmarke erreicht oder überschritten hat.
 - Das Spiel läuft nach Erreichen der Zielmarke weiter.
 
