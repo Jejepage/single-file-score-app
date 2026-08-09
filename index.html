@@ -51,6 +51,42 @@
       }
     }
 
+    html[data-theme="playful"] {
+      color-scheme: light;
+      --bg: #fff4e8;
+      --surface: rgba(255, 255, 255, .9);
+      --surface-solid: #fffdf9;
+      --surface-soft: #f3e9ff;
+      --text: #30213f;
+      --muted: #75637e;
+      --line: rgba(93, 52, 130, .14);
+      --accent: #7c3aed;
+      --accent-strong: #5b21b6;
+      --accent-soft: #ede3ff;
+      --warm: #ff8a3d;
+      --danger: #d6295f;
+      --shadow: 0 14px 36px rgba(112, 55, 150, .13);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      html[data-theme="playful"] {
+        color-scheme: dark;
+        --bg: #1a1221;
+        --surface: rgba(43, 30, 52, .9);
+        --surface-solid: #2b1e34;
+        --surface-soft: #3b2949;
+        --text: #fff7ff;
+        --muted: #c4afcb;
+        --line: rgba(255, 255, 255, .12);
+        --accent: #c084fc;
+        --accent-strong: #e0b7ff;
+        --accent-soft: #42235e;
+        --warm: #ffad5c;
+        --danger: #ff709c;
+        --shadow: 0 18px 44px rgba(0, 0, 0, .28);
+      }
+    }
+
     * { box-sizing: border-box; }
 
     html { -webkit-text-size-adjust: 100%; }
@@ -67,6 +103,14 @@
       color: var(--text);
       font-family: var(--font);
       -webkit-font-smoothing: antialiased;
+    }
+
+    html[data-theme="playful"] body {
+      background:
+        radial-gradient(circle at 88% 6%, rgba(255, 138, 61, .28), transparent 23rem),
+        radial-gradient(circle at 5% 38%, rgba(34, 197, 94, .2), transparent 24rem),
+        radial-gradient(circle at 82% 82%, rgba(59, 130, 246, .18), transparent 24rem),
+        var(--bg);
     }
 
     button, input { font: inherit; }
@@ -98,6 +142,8 @@
       margin-bottom: 22px;
     }
 
+    .top-actions { display: flex; align-items: center; gap: 8px; }
+
     .brand {
       display: flex;
       align-items: center;
@@ -117,6 +163,16 @@
       color: white;
       font-size: 19px;
       box-shadow: 0 8px 20px color-mix(in srgb, var(--accent) 28%, transparent);
+    }
+
+    html[data-theme="playful"] .brand-mark {
+      background: linear-gradient(135deg, #7c3aed, #ec4899 58%, #ff8a3d);
+      transform: rotate(-4deg);
+    }
+
+    html[data-theme="playful"] .primary-button,
+    html[data-theme="playful"] .score-add {
+      background: linear-gradient(135deg, #7c3aed, #ec4899);
     }
 
     .icon-button {
@@ -360,6 +416,41 @@
       display: contents;
     }
 
+    .score-identity {
+      position: relative;
+      min-width: 0;
+      overflow: hidden;
+      padding: 7px 9px;
+      border-radius: 12px;
+      background: var(--surface-soft);
+    }
+
+    .score-progress {
+      position: absolute;
+      z-index: 0;
+      inset: 0 auto 0 0;
+      width: var(--progress);
+      background: color-mix(in srgb, var(--accent) 26%, transparent);
+      transition: width .25s ease;
+    }
+
+    .score-identity > :not(.score-progress) { position: relative; z-index: 1; }
+
+    html[data-theme="playful"] .score-card {
+      border-color: color-mix(in srgb, var(--player-color) 35%, var(--line));
+      box-shadow: 0 10px 24px color-mix(in srgb, var(--player-color) 12%, transparent);
+    }
+
+    html[data-theme="playful"] .score-identity {
+      background: color-mix(in srgb, var(--player-color) 12%, var(--surface-solid));
+    }
+
+    html[data-theme="playful"] .score-progress {
+      background: color-mix(in srgb, var(--player-color) 38%, transparent);
+    }
+
+    html[data-theme="playful"] .score-value { color: var(--player-color); }
+
     .score-name {
       overflow: hidden;
       margin: 0 0 2px;
@@ -574,7 +665,10 @@
   <div class="app-shell">
     <header class="topbar">
       <div class="brand"><span class="brand-mark" aria-hidden="true">↗</span><span>Punktestand</span></div>
-      <button id="resetTop" class="icon-button" type="button" hidden>Neu</button>
+      <div class="top-actions">
+        <button id="themeToggle" class="icon-button" type="button" aria-label="Design wechseln" aria-pressed="false">Bunt</button>
+        <button id="resetTop" class="icon-button" type="button" hidden>Neu</button>
+      </div>
     </header>
     <main id="app" aria-live="polite"></main>
   </div>
@@ -596,8 +690,10 @@
       "use strict";
 
       const STORAGE_KEY = "punktestand-app-v1";
+      const THEME_KEY = "punktestand-theme-v1";
       const app = document.querySelector("#app");
       const resetTop = document.querySelector("#resetTop");
+      const themeToggle = document.querySelector("#themeToggle");
       const dialog = document.querySelector("#confirmDialog");
       const dialogTitle = document.querySelector("#dialogTitle");
       const dialogText = document.querySelector("#dialogText");
@@ -607,7 +703,31 @@
       let pendingConfirmation = null;
       let toastTimer;
 
+      function loadTheme() {
+        try { return localStorage.getItem(THEME_KEY) === "playful" ? "playful" : "classic"; }
+        catch { return "classic"; }
+      }
+
+      let theme = loadTheme();
+
+      function applyTheme() {
+        const isPlayful = theme === "playful";
+        document.documentElement.dataset.theme = theme;
+        themeToggle.textContent = isPlayful ? "Ruhig" : "Bunt";
+        themeToggle.setAttribute("aria-pressed", String(isPlayful));
+        themeToggle.setAttribute("title", isPlayful ? "Zum ruhigen Design wechseln" : "Zum bunten Design wechseln");
+      }
+
+      themeToggle.addEventListener("click", () => {
+        theme = theme === "playful" ? "classic" : "playful";
+        try { localStorage.setItem(THEME_KEY, theme); } catch { /* Design bleibt für diese Sitzung aktiv. */ }
+        applyTheme();
+      });
+
+      applyTheme();
+
       const newId = () => `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
+      const PLAYER_COLORS = ["#7c3aed", "#ec4899", "#f97316", "#16a34a", "#2563eb", "#0891b2", "#ca8a04", "#9333ea"];
       const initialState = () => ({
         screen: "setup",
         target: 100,
@@ -726,12 +846,16 @@
               <div class="target-pill">Zielmarke <strong>${state.target}</strong></div>
             </div>
             <div class="score-list">
-              ${state.players.map(player => {
+              ${state.players.map((player, index) => {
                 const reached = player.score >= state.target;
+                const progress = Math.max(0, Math.min(100, (player.score / state.target) * 100));
+                const progressValue = Math.max(0, Math.min(state.target, player.score));
+                const playerColor = PLAYER_COLORS[index % PLAYER_COLORS.length];
                 return `
-                  <article class="score-card${reached ? " reached" : ""}" data-player-id="${escapeHtml(player.id)}">
+                  <article class="score-card${reached ? " reached" : ""}" data-player-id="${escapeHtml(player.id)}" style="--progress:${progress.toFixed(1)}%;--player-color:${playerColor}">
                     <div class="score-summary">
-                      <div style="min-width:0">
+                      <div class="score-identity" role="progressbar" aria-label="Fortschritt von ${escapeHtml(player.name)}" aria-valuemin="0" aria-valuemax="${state.target}" aria-valuenow="${progressValue}" aria-valuetext="${player.score} von ${state.target} Punkten">
+                        <div class="score-progress" aria-hidden="true"></div>
                         <h2 class="score-name">${escapeHtml(player.name)}</h2>
                         <div class="score-status${reached ? " hit" : ""}">${reached ? "Zielmarke erreicht" : `${Math.max(0, state.target - player.score)} bis zur Zielmarke`}</div>
                       </div>

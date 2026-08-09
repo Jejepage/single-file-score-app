@@ -10,6 +10,8 @@ Eine mobile Punkte-App für mehrere Spieler – ohne Frameworks und ohne externe
 - positive und negative Punkte
 - ein Rückgängig-Schritt
 - neue Runden mit denselben Spielern
+- Fortschrittsbalken bis zur Zielmarke
+- umschaltbares ruhiges oder farbenfrohes Design
 - manuelles Spielende mit Rangliste
 - lokale Speicherung im Browser
 - iPhone-optimierter Hell- und Dunkelmodus

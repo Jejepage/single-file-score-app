@@ -28,6 +28,7 @@ Eine einfache mobile Web-App zur Verwaltung von Spielständen. Die App ist für 
 - Punkte werden als freie ganze Zahl eingegeben und zum aktuellen Stand addiert.
 - Positive und negative Werte sind erlaubt und werden direkt im Punktefeld eingegeben; `0` wird nicht als Änderung akzeptiert.
 - Ein Spieler wird optisch hervorgehoben, sobald sein Punktestand die Zielmarke erreicht oder überschritten hat.
+- Hinter jedem Spielernamen zeigt ein Fortschrittsbalken den Anteil des aktuellen Punktestands an der Zielmarke; negative Werte beginnen bei 0 %, Werte ab der Zielmarke enden bei 100 %.
 - Das Spiel läuft nach Erreichen der Zielmarke weiter.
 
 ## 5. Rückgängig
@@ -53,12 +54,14 @@ Eine einfache mobile Web-App zur Verwaltung von Spielständen. Die App ist für 
 - Nach Schließen oder Neuladen des Browsers wird das aktuelle Spiel wiederhergestellt.
 - Es gibt kein Archiv früherer Spiele und keine Synchronisation zwischen Geräten.
 - Die Speicherung gilt nur für den jeweiligen Browser und die jeweilige Web-Adresse.
+- Die gewählte Designvariante wird als lokale Darstellungspräferenz unabhängig vom Spielstand gespeichert.
 
 ## 8. Gestaltung und Bedienbarkeit
 
 - Mobile-First-Oberfläche im Stil einer nativen iPhone-App.
 - Große Touch-Ziele, gut lesbare Typografie und deutliche Rückmeldungen.
 - Die laufenden Punktestände erscheinen als kompakte einzeilige Liste, damit möglichst viele Spieler gleichzeitig sichtbar bleiben.
+- Ein Umschalter wechselt zwischen dem ruhigen Standarddesign und einem verspielten, farbenfroheren Design mit individuellen Spielerfarben.
 - Unterstützung für iPhone Safe Areas, Hellmodus, Dunkelmodus und reduzierte Animationen.
 - Eingabefelder vermeiden den automatischen Safari-Zoom.
 - Die Oberfläche bleibt auch auf größeren Displays responsiv.
