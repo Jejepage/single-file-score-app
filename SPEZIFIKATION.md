@@ -15,42 +15,51 @@ Eine einfache mobile Web-App zur Verwaltung von Spielständen. Die App ist für 
 
 ## 3. Spiel einrichten
 
-- Beim ersten Start sind keine Spieler voreingestellt.
+- Beim ersten Start sind Elly, Lisi, Julien, Anne und Joe voreingestellt.
 - Über „Spieler hinzufügen“ können Spieler frei hinzugefügt werden.
 - Namen können bearbeitet und Spieler wieder entfernt werden.
 - Für den Spielstart sind mindestens zwei Spieler mit unterschiedlichen, nicht leeren Namen erforderlich.
-- Es kann eine positive Zielpunktzahl festgelegt werden.
-- Die Zielpunktzahl ist eine Zielmarke und kein automatisches Spielende.
+- Es stehen die Vorlagen „Eigenes Spiel“, „FLIP 7“ und „SKYJO“ zur Verfügung.
+- FLIP 7 verwendet 200 Punkte, automatisches Spielende und die höchste Punktzahl als Gewinnerregel.
+- SKYJO verwendet 100 Punkte, automatisches Spielende und die niedrigste Punktzahl als Gewinnerregel.
+- Beim eigenen Spiel lassen sich Zielwert, Gewinnerregel und automatisches oder manuelles Spielende frei bestimmen.
+- Das Ändern einer Vorlageneinstellung wechselt automatisch zum eigenen Spiel, ohne die Spielerliste zu verändern.
 
 ## 4. Punkte erfassen
 
 - Jeder Spieler besitzt einen sichtbaren Gesamtpunktestand.
-- Punkte werden als freie ganze Zahl eingegeben und zum aktuellen Stand addiert.
-- Positive und negative Werte sind erlaubt und werden direkt im Punktefeld eingegeben; `0` wird nicht als Änderung akzeptiert.
+- Für jeden Spieler wird pro Runde eine freie ganze Zahl eingegeben.
+- Positive, negative und `0` Punkte sind erlaubt; ein `±`-Button wechselt zuverlässig das Vorzeichen.
+- „Runde werten“ addiert alle Rundenwerte gleichzeitig zu den Gesamtständen.
+- Alle Spieler benötigen vor der Wertung einen expliziten Wert, damit keine Eingabe versehentlich ausgelassen wird.
 - Ein Spieler wird optisch hervorgehoben, sobald sein Punktestand die Zielmarke erreicht oder überschritten hat.
 - Hinter jedem Spielernamen zeigt ein Fortschrittsbalken den Anteil des aktuellen Punktestands an der Zielmarke; negative Werte beginnen bei 0 %, Werte ab der Zielmarke enden bei 100 %.
-- Das Spiel läuft nach Erreichen der Zielmarke weiter.
+- Ein Rundenzähler beginnt bei 1 und steigt nach jeder vollständigen Wertung.
 
 ## 5. Rückgängig
 
-- Es kann genau die letzte Punkteingabe rückgängig gemacht werden.
-- Nach dem Rückgängigmachen ist die Funktion deaktiviert, bis eine neue Punkteingabe erfolgt.
-- Der letzte rückgängig machbare Schritt wird zusammen mit dem aktuellen Spiel gespeichert.
+- Es kann genau die letzte vollständig gewertete Runde rückgängig gemacht werden.
+- Dabei werden alle Gesamtstände und der Rundenzähler zurückgesetzt und die entfernten Rundenwerte wieder in die Eingabefelder eingesetzt.
+- Nach dem Rückgängigmachen ist die Funktion deaktiviert, bis erneut eine Runde gewertet wurde.
+- Die letzte rückgängig machbare Runde wird zusammen mit dem aktuellen Spiel gespeichert.
 
 ## 6. Runde und Spielende
 
-- „Neue Runde“ setzt alle Punktestände auf `0`.
-- Spielernamen und Zielmarke bleiben bei einer neuen Runde erhalten.
-- Während eines laufenden Spiels muss das Zurücksetzen der Runde bestätigt werden.
-- Das Spiel wird ausschließlich durch den Nutzer über „Spiel beenden“ beendet.
+- Die Gesamtstände bleiben zwischen den Runden bestehen.
+- Bei automatischem Spielende wird die Zielbedingung erst nach der gemeinsamen Wertung aller Spieler geprüft.
+- Bei SKYJO beendet eine Runde das Spiel, sobald mindestens ein Spieler 100 Punkte erreicht; die niedrigste Gesamtpunktzahl gewinnt.
+- Bei FLIP 7 beendet eine Runde das Spiel, sobald mindestens ein Spieler 200 Punkte erreicht; die höchste Gesamtpunktzahl gewinnt. Bei Gleichstand an der Spitze wird weitergespielt.
+- Ein eigenes Spiel verwendet die konfigurierte Gewinner- und Endregel.
+- Das Spiel kann unabhängig davon jederzeit manuell beendet werden; offene, noch nicht gewertete Eingaben werden dabei ignoriert.
 - Die Endansicht zeigt eine nach Punkten sortierte Rangliste.
-- Die höchste Punktzahl gewinnt; bei gleicher Höchstpunktzahl werden mehrere Gewinner angezeigt.
-- Aus der Endansicht kann eine neue Runde mit denselben Spielern gestartet werden.
-- „Neues Spiel einrichten“ löscht den aktuellen Stand und öffnet eine leere Spielereinrichtung.
+- Die Sortierung richtet sich nach der gewählten Gewinnerregel; Gleichstände werden gemeinsam ausgezeichnet.
+- Die Endansicht zeigt die Anzahl der gespielten Runden und ermöglicht die Korrektur der letzten Runde.
+- „Neue Partie mit gleichen Spielern“ setzt Punkte und Rundenzähler zurück, behält aber Spieler und Einstellungen.
+- „Neues Spiel einrichten“ öffnet die Einrichtung mit den Standardspielern.
 
 ## 7. Speicherung
 
-- Zielmarke, Spielernamen, Punktestände, aktueller Bildschirm und letzter Rückgängig-Schritt werden automatisch gespeichert.
+- Vorlage, Regeln, Zielmarke, Spielernamen, Punktestände, Rundenzähler, offene Rundeneingaben und letzte gewertete Runde werden automatisch gespeichert.
 - Nach Schließen oder Neuladen des Browsers wird das aktuelle Spiel wiederhergestellt.
 - Es gibt kein Archiv früherer Spiele und keine Synchronisation zwischen Geräten.
 - Die Speicherung gilt nur für den jeweiligen Browser und die jeweilige Web-Adresse.
@@ -77,9 +86,12 @@ Eine einfache mobile Web-App zur Verwaltung von Spielständen. Die App ist für 
 
 - Die App funktioniert ohne externe Netzwerkressourcen.
 - Ein Spiel kann mit mindestens zwei frei benannten Spielern gestartet werden.
+- Neue Spiele enthalten die fünf festgelegten Standardspieler, die entfernt oder erweitert werden können.
+- FLIP 7 und SKYJO setzen Zielwert und Gewinnerregel korrekt.
 - Positive und negative Punkte werden korrekt addiert.
-- Rückgängig betrifft nur die letzte Eingabe.
-- Eine neue Runde behält Namen und Zielmarke und setzt alle Punkte auf `0`.
-- Das Erreichen der Zielmarke beendet das Spiel nicht.
-- Der Nutzer kann das Spiel manuell beenden und erhält eine korrekte Rangliste.
+- Eine Runde wird nur mit vollständigen Eingaben für alle Spieler gewertet.
+- Rückgängig betrifft genau die letzte vollständige Runde und reduziert den Rundenzähler.
+- SKYJO ermittelt nach Erreichen der Zielmarke den niedrigsten Gesamtstand als Gewinner.
+- FLIP 7 ermittelt nach Erreichen der Zielmarke den höchsten eindeutigen Gesamtstand als Gewinner.
+- Der Nutzer kann das Spiel weiterhin manuell beenden und erhält eine nach der Gewinnerregel sortierte Rangliste.
 - Der aktuelle Stand bleibt nach einem Neuladen erhalten.

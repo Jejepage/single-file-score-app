@@ -6,13 +6,14 @@ Eine mobile Punkte-App für mehrere Spieler – ohne Frameworks und ohne externe
 
 ## Funktionen
 
-- frei wählbare Spieler und Zielmarke
-- positive und negative Punkte
-- ein Rückgängig-Schritt
-- neue Runden mit denselben Spielern
+- Standardspieler Elly, Lisi, Julien, Anne und Joe
+- Vorlagen für FLIP 7 und SKYJO sowie frei einstellbare Spiele
+- rundenweise Wertung mit Rundenzähler
+- positive, negative und 0 Punkte mit `±`-Button
+- Rückgängig für die letzte vollständige Runde
 - Fortschrittsbalken bis zur Zielmarke
 - umschaltbares ruhiges oder farbenfrohes Design
-- manuelles Spielende mit Rangliste
+- automatische oder manuelle Gewinnerermittlung mit Rangliste
 - lokale Speicherung im Browser
 - iPhone-optimierter Hell- und Dunkelmodus
 - eigenes App-Icon für den iPhone-Home-Bildschirm
