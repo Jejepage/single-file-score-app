@@ -712,6 +712,182 @@
 
     .toast.show { opacity: 1; transform: translate(-50%, 0); }
 
+    .cluedo-entry {
+      display: grid;
+      width: 100%;
+      margin: 0 0 18px;
+      padding: 17px 18px;
+      grid-template-columns: 48px 1fr auto;
+      gap: 14px;
+      align-items: center;
+      border: 1px solid color-mix(in srgb, #8f2f38 24%, var(--line));
+      border-radius: var(--radius-lg);
+      background:
+        linear-gradient(135deg, color-mix(in srgb, #8f2f38 12%, var(--surface-solid)), var(--surface));
+      box-shadow: var(--shadow);
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .cluedo-entry-icon {
+      display: grid;
+      width: 48px;
+      height: 48px;
+      place-items: center;
+      border-radius: 15px;
+      background: #8f2f38;
+      color: #fff8eb;
+      font-size: 23px;
+      box-shadow: 0 9px 22px rgba(91, 25, 34, .22);
+    }
+
+    .cluedo-entry-copy { min-width: 0; }
+    .cluedo-entry-copy strong { display: block; font-size: 17px; letter-spacing: -.02em; }
+    .cluedo-entry-copy small { display: block; margin-top: 3px; color: var(--muted); font-size: 13px; line-height: 1.35; }
+    .cluedo-entry-arrow { color: #8f2f38; font-size: 24px; font-weight: 700; }
+
+    .cluedo-shell { --cluedo: #8f2f38; --cluedo-soft: color-mix(in srgb, var(--cluedo) 10%, var(--surface-solid)); }
+    .cluedo-hero { margin-bottom: 22px; }
+    .cluedo-hero h1 { max-width: 640px; }
+    .cluedo-hero .intro { margin-bottom: 16px; }
+
+    .cluedo-progress {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 720;
+    }
+
+    .cluedo-progress span {
+      padding: 7px 10px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--surface);
+    }
+
+    .cluedo-case {
+      margin-bottom: 14px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .cluedo-case-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 16px 17px 12px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .cluedo-case-title { margin: 0; font-size: 18px; letter-spacing: -.025em; }
+    .cluedo-case-count { color: var(--muted); font-size: 12px; font-weight: 750; }
+    .cluedo-list { display: grid; }
+
+    .cluedo-item {
+      display: grid;
+      width: 100%;
+      min-height: 56px;
+      padding: 9px 12px 9px 17px;
+      grid-template-columns: 1fr 38px;
+      gap: 12px;
+      align-items: center;
+      border: 0;
+      border-bottom: 1px solid var(--line);
+      background: transparent;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .cluedo-item:last-child { border-bottom: 0; }
+    .cluedo-item-name { font-size: 15px; font-weight: 670; line-height: 1.25; }
+
+    .cluedo-mark {
+      display: grid;
+      width: 36px;
+      height: 36px;
+      place-items: center;
+      border: 2px solid color-mix(in srgb, var(--muted) 42%, transparent);
+      border-radius: 11px;
+      color: transparent;
+      font-size: 20px;
+      font-weight: 850;
+      line-height: 1;
+    }
+
+    .cluedo-item[data-mark="excluded"] { color: var(--muted); background: color-mix(in srgb, var(--surface-soft) 45%, transparent); }
+    .cluedo-item[data-mark="excluded"] .cluedo-item-name { text-decoration: line-through; text-decoration-thickness: 1.5px; }
+    .cluedo-item[data-mark="excluded"] .cluedo-mark { border-color: var(--muted); background: var(--surface-soft); color: var(--muted); }
+    .cluedo-item[data-mark="suspect"] { background: color-mix(in srgb, var(--warm) 10%, transparent); }
+    .cluedo-item[data-mark="suspect"] .cluedo-mark { border-color: var(--warm); background: color-mix(in srgb, var(--warm) 18%, transparent); color: #9b5b00; }
+    .cluedo-item[data-mark="solution"] { background: var(--cluedo-soft); }
+    .cluedo-item[data-mark="solution"] .cluedo-mark { border-color: var(--cluedo); background: var(--cluedo); color: #fff; }
+    .cluedo-item.last-option:not([data-mark="solution"]) { box-shadow: inset 4px 0 var(--warm); }
+
+    .cluedo-tools {
+      position: sticky;
+      z-index: 5;
+      bottom: max(10px, env(safe-area-inset-bottom));
+      display: grid;
+      margin: 20px 0 14px;
+      padding: 6px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 5px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: color-mix(in srgb, var(--surface-solid) 92%, transparent);
+      box-shadow: 0 16px 42px rgba(20, 20, 18, .18);
+      backdrop-filter: blur(20px);
+    }
+
+    .cluedo-tool {
+      min-height: 49px;
+      padding: 7px 5px;
+      border: 0;
+      border-radius: 13px;
+      background: transparent;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 760;
+      cursor: pointer;
+    }
+
+    .cluedo-tool span { display: block; margin-bottom: 2px; font-size: 19px; line-height: 1; }
+    .cluedo-tool[aria-pressed="true"] { background: var(--text); color: var(--bg); box-shadow: 0 5px 14px rgba(0, 0, 0, .16); }
+
+    .cluedo-notes { margin-top: 14px; }
+    .cluedo-notes label { display: block; margin-bottom: 8px; font-size: 14px; font-weight: 760; }
+    .cluedo-notes textarea {
+      width: 100%;
+      min-height: 112px;
+      padding: 14px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      background: var(--surface-solid);
+      color: var(--text);
+      font: inherit;
+      font-size: 16px;
+      line-height: 1.45;
+    }
+
+    .cluedo-bottom-actions { display: flex; justify-content: space-between; gap: 10px; margin-top: 14px; }
+    .cluedo-bottom-actions button { width: auto; margin: 0; }
+    .case-solved {
+      margin-bottom: 16px;
+      padding: 17px;
+      border: 1px solid color-mix(in srgb, #2f8f5b 30%, var(--line));
+      border-radius: var(--radius-lg);
+      background: color-mix(in srgb, #2f8f5b 11%, var(--surface));
+    }
+    .case-solved strong { display: block; margin-bottom: 6px; color: #2f8f5b; font-size: 14px; }
+    .case-solved p { margin: 0; font-size: 14px; line-height: 1.5; }
+
     @media (min-width: 620px) {
       .app-shell { padding-inline: 26px; }
       .score-controls { grid-template-columns: 44px 88px; }
@@ -733,6 +909,8 @@
       .score-input { height: 44px; padding-inline: 5px; }
       .game-head { grid-template-columns: 1fr; align-items: start; }
       .game-pills { justify-content: flex-start; }
+      .cluedo-entry { grid-template-columns: 44px 1fr auto; padding: 14px; gap: 10px; }
+      .cluedo-entry-icon { width: 44px; height: 44px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -743,8 +921,9 @@
 <body>
   <div class="app-shell">
     <header class="topbar">
-      <div class="brand"><span class="brand-mark" aria-hidden="true">↗</span><span>Punktestand</span></div>
+      <div class="brand"><span class="brand-mark" aria-hidden="true">↗</span><span id="brandTitle">Punktestand</span></div>
       <div class="top-actions">
+        <button id="backToScores" class="icon-button" type="button" hidden>← Punkte</button>
         <button id="themeToggle" class="icon-button" type="button" aria-label="Design wechseln" aria-pressed="false">Bunt</button>
         <button id="resetTop" class="icon-button" type="button" hidden>Neu</button>
       </div>
@@ -770,8 +949,11 @@
 
       const STORAGE_KEY = "punktestand-app-v1";
       const THEME_KEY = "punktestand-theme-v1";
+      const CLUEDO_STORAGE_KEY = "punktestand-cluedo-v1";
       const app = document.querySelector("#app");
       const resetTop = document.querySelector("#resetTop");
+      const backToScores = document.querySelector("#backToScores");
+      const brandTitle = document.querySelector("#brandTitle");
       const themeToggle = document.querySelector("#themeToggle");
       const dialog = document.querySelector("#confirmDialog");
       const dialogTitle = document.querySelector("#dialogTitle");
@@ -781,6 +963,7 @@
       const toast = document.querySelector("#toast");
       let pendingConfirmation = null;
       let toastTimer;
+      let activeView = "scores";
 
       function loadTheme() {
         try { return localStorage.getItem(THEME_KEY) === "playful" ? "playful" : "classic"; }
@@ -906,12 +1089,26 @@
       });
 
       resetTop.addEventListener("click", () => {
+        if (activeView === "cluedo") {
+          confirmAction({
+            title: "Neuen Fall beginnen?",
+            text: "Alle Markierungen und Notizen dieses Falls werden gelöscht.",
+            confirmLabel: "Fall zurücksetzen",
+            action: resetCluedo
+          });
+          return;
+        }
         confirmAction({
           title: "Neues Spiel beginnen?",
           text: "Der aktuelle Spielstand wird gelöscht. Diese Aktion kann nicht rückgängig gemacht werden.",
           confirmLabel: "Neu beginnen",
           action: resetGame
         });
+      });
+
+      backToScores.addEventListener("click", () => {
+        activeView = "scores";
+        render();
       });
 
       function resetGame() {
@@ -927,6 +1124,11 @@
             <p class="eyebrow">Neues Spiel</p>
             <h1>Was spielen wir?</h1>
             <p class="intro">Wähle eine Vorlage oder stelle Ziel und Gewinnerregel selbst zusammen.</p>
+            <button id="openCluedo" class="cluedo-entry" type="button">
+              <span class="cluedo-entry-icon" aria-hidden="true">⌕</span>
+              <span class="cluedo-entry-copy"><strong>Cluedo ermitteln</strong><small>Harry-Potter-Notizblock zum Ankreuzen</small></span>
+              <span class="cluedo-entry-arrow" aria-hidden="true">›</span>
+            </button>
             <div class="panel">
               <span class="section-label">Spielvorlage</span>
               <div id="presetGrid" class="preset-grid" role="group" aria-label="Spielvorlage">
@@ -1063,6 +1265,11 @@
       function bindSetup() {
         const targetInput = document.querySelector("#target");
         const error = document.querySelector("#setupError");
+
+        document.querySelector("#openCluedo").addEventListener("click", () => {
+          activeView = "cluedo";
+          render();
+        });
 
         document.querySelector("#presetGrid").addEventListener("click", event => {
           const button = event.target.closest("[data-preset]");
@@ -1295,12 +1502,183 @@
         document.querySelector("#newGame").addEventListener("click", resetGame);
       }
 
-      function render() {
-        resetTop.hidden = state.screen === "setup";
+      const CLUEDO_CATEGORIES = [
+        {
+          id: "person",
+          title: "Verdächtige Person",
+          items: ["Draco Malfoy", "Crabbe & Goyle", "Lucius Malfoy", "Dolores Umbridge", "Peter Pettigrew", "Bellatrix Lestrange"]
+        },
+        {
+          id: "object",
+          title: "Gegenstand",
+          items: ["Schlaftrunk", "Verschwindekabinett", "Portschlüssel", "Impedimenta", "Petrificus Totalus", "Alraune"]
+        },
+        {
+          id: "place",
+          title: "Ort",
+          items: ["Große Halle", "Krankenflügel", "Raum der Wünsche", "Klassenzimmer für Zaubertränke", "Pokalzimmer", "Klassenzimmer für Wahrsagen", "Eulerei", "Bibliothek", "Verteidigung gegen die dunklen Künste"]
+        }
+      ];
+
+      function loadCluedoState() {
+        try {
+          const saved = JSON.parse(localStorage.getItem(CLUEDO_STORAGE_KEY));
+          const allowedKeys = new Set(CLUEDO_CATEGORIES.flatMap(category => category.items.map((_, index) => `${category.id}-${index}`)));
+          const marks = {};
+          if (saved?.marks && typeof saved.marks === "object") {
+            for (const [key, value] of Object.entries(saved.marks)) {
+              if (allowedKeys.has(key) && ["excluded", "suspect", "solution"].includes(value)) marks[key] = value;
+            }
+          }
+          return {
+            marks,
+            tool: ["excluded", "suspect", "solution"].includes(saved?.tool) ? saved.tool : "excluded",
+            notes: typeof saved?.notes === "string" ? saved.notes.slice(0, 5000) : "",
+            history: []
+          };
+        } catch {
+          return { marks: {}, tool: "excluded", notes: "", history: [] };
+        }
+      }
+
+      let cluedoState = loadCluedoState();
+
+      function saveCluedo() {
+        try {
+          localStorage.setItem(CLUEDO_STORAGE_KEY, JSON.stringify({ marks: cluedoState.marks, tool: cluedoState.tool, notes: cluedoState.notes }));
+        } catch { /* Ermittlungsblock bleibt für diese Sitzung nutzbar. */ }
+      }
+
+      function resetCluedo() {
+        localStorage.removeItem(CLUEDO_STORAGE_KEY);
+        cluedoState = { marks: {}, tool: "excluded", notes: "", history: [] };
+        render();
+        showToast("Neuer Fall begonnen");
+      }
+
+      function cluedoTemplate() {
+        const excludedCount = Object.values(cluedoState.marks).filter(mark => mark === "excluded").length;
+        const solved = CLUEDO_CATEGORIES.map(category => {
+          const index = category.items.findIndex((_, itemIndex) => cluedoState.marks[`${category.id}-${itemIndex}`] === "solution");
+          return index >= 0 ? category.items[index] : null;
+        });
+        const solvedAll = solved.every(Boolean);
+        const markSymbol = { excluded: "×", suspect: "?", solution: "✓" };
+
+        return `
+          <section class="cluedo-shell">
+            <div class="cluedo-hero">
+              <p class="eyebrow">Cluedo · Harry Potter</p>
+              <h1>Wer war es?</h1>
+              <p class="intro">Wähle unten eine Markierung und tippe dann auf die Karten. Dein Fall bleibt automatisch auf diesem Gerät gespeichert.</p>
+              <div class="cluedo-progress"><span>${excludedCount} ausgeschlossen</span><span>${21 - excludedCount} offen</span></div>
+            </div>
+            ${solvedAll ? `<div class="case-solved"><strong>Fall gelöst</strong><p>${solved.map(escapeHtml).join(" · ")}</p></div>` : ""}
+            ${CLUEDO_CATEGORIES.map(category => {
+              const available = category.items.filter((_, index) => cluedoState.marks[`${category.id}-${index}`] !== "excluded").length;
+              return `
+                <section class="cluedo-case" aria-labelledby="cluedo-${category.id}">
+                  <div class="cluedo-case-head">
+                    <h2 class="cluedo-case-title" id="cluedo-${category.id}">${category.title}</h2>
+                    <span class="cluedo-case-count">${available} offen</span>
+                  </div>
+                  <div class="cluedo-list">
+                    ${category.items.map((item, index) => {
+                      const key = `${category.id}-${index}`;
+                      const mark = cluedoState.marks[key] || "";
+                      const lastOption = available === 1 && mark !== "excluded";
+                      const status = mark === "excluded" ? "ausgeschlossen" : mark === "suspect" ? "verdächtig" : mark === "solution" ? "als Lösung markiert" : "offen";
+                      return `<button class="cluedo-item${lastOption ? " last-option" : ""}" type="button" data-cluedo-key="${key}" data-category="${category.id}" data-mark="${mark}" aria-label="${escapeHtml(item)}, ${status}"><span class="cluedo-item-name">${escapeHtml(item)}</span><span class="cluedo-mark" aria-hidden="true">${markSymbol[mark] || "·"}</span></button>`;
+                    }).join("")}
+                  </div>
+                </section>`;
+            }).join("")}
+            <div class="cluedo-tools" role="group" aria-label="Markierung auswählen">
+              <button class="cluedo-tool" type="button" data-cluedo-tool="excluded" aria-pressed="${cluedoState.tool === "excluded"}"><span>×</span>Ausschließen</button>
+              <button class="cluedo-tool" type="button" data-cluedo-tool="suspect" aria-pressed="${cluedoState.tool === "suspect"}"><span>?</span>Verdacht</button>
+              <button class="cluedo-tool" type="button" data-cluedo-tool="solution" aria-pressed="${cluedoState.tool === "solution"}"><span>✓</span>Lösung</button>
+            </div>
+            <div class="panel cluedo-notes">
+              <label for="cluedoNotes">Notizen zum Fall</label>
+              <textarea id="cluedoNotes" maxlength="5000" placeholder="Hinweise, gezeigte Karten, Vermutungen …">${escapeHtml(cluedoState.notes)}</textarea>
+            </div>
+            <div class="cluedo-bottom-actions">
+              <button id="cluedoUndo" class="undo-button" type="button" ${cluedoState.history.length ? "" : "disabled"}>↶ Rückgängig</button>
+              <button id="cluedoReset" class="finish-button" type="button">Neuer Fall</button>
+            </div>
+          </section>`;
+      }
+
+      function bindCluedo() {
+        document.querySelector(".cluedo-tools").addEventListener("click", event => {
+          const button = event.target.closest("[data-cluedo-tool]");
+          if (!button) return;
+          cluedoState.tool = button.dataset.cluedoTool;
+          saveCluedo();
+          render();
+        });
+
+        document.querySelectorAll("[data-cluedo-key]").forEach(button => {
+          button.addEventListener("click", () => {
+            const key = button.dataset.cluedoKey;
+            const previous = { ...cluedoState.marks };
+            if (cluedoState.marks[key] === cluedoState.tool) delete cluedoState.marks[key];
+            else {
+              if (cluedoState.tool === "solution") {
+                const prefix = `${button.dataset.category}-`;
+                for (const existingKey of Object.keys(cluedoState.marks)) {
+                  if (existingKey.startsWith(prefix) && cluedoState.marks[existingKey] === "solution") delete cluedoState.marks[existingKey];
+                }
+              }
+              cluedoState.marks[key] = cluedoState.tool;
+            }
+            cluedoState.history.push(previous);
+            if (cluedoState.history.length > 30) cluedoState.history.shift();
+            saveCluedo();
+            render(false);
+          });
+        });
+
+        document.querySelector("#cluedoNotes").addEventListener("input", event => {
+          cluedoState.notes = event.target.value;
+          saveCluedo();
+        });
+
+        document.querySelector("#cluedoUndo").addEventListener("click", () => {
+          const previous = cluedoState.history.pop();
+          if (!previous) return;
+          cluedoState.marks = previous;
+          saveCluedo();
+          render(false);
+          showToast("Markierung zurückgenommen");
+        });
+
+        document.querySelector("#cluedoReset").addEventListener("click", () => {
+          confirmAction({
+            title: "Neuen Fall beginnen?",
+            text: "Alle Markierungen und Notizen dieses Falls werden gelöscht.",
+            confirmLabel: "Fall zurücksetzen",
+            action: resetCluedo
+          });
+        });
+      }
+
+      function render(scrollToTop = true) {
+        const isCluedo = activeView === "cluedo";
+        brandTitle.textContent = isCluedo ? "Ermittlungsblock" : "Punktestand";
+        backToScores.hidden = !isCluedo;
+        resetTop.hidden = isCluedo ? false : state.screen === "setup";
+        resetTop.textContent = isCluedo ? "Neu" : "Neu";
+        if (isCluedo) {
+          app.innerHTML = cluedoTemplate();
+          bindCluedo();
+          if (scrollToTop) window.scrollTo({ top: 0, behavior: "smooth" });
+          return;
+        }
         if (state.screen === "setup") { app.innerHTML = setupTemplate(); bindSetup(); }
         else if (state.screen === "game") { app.innerHTML = gameTemplate(); bindGame(); }
         else { app.innerHTML = finishedTemplate(); bindFinished(); }
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        if (scrollToTop) window.scrollTo({ top: 0, behavior: "smooth" });
       }
 
       save();
